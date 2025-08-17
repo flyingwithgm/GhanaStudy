@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GhanaStudy - Complete Learning Platform</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+                <h1>GhanaStudy</h1>
+            </div>
+            
+            <div class="search-bar">
+                <input type="text" id="search-input" placeholder="Search questions, topics, students...">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+            
+            <div class="header-actions">
+                <button class="notification-icon" id="notifications-btn">
+                    <i class="fas fa-bell"></i>
+                    <span class="notification-badge">5</span>
+                </button>
+                
+                <button class="notification-icon" id="messages-btn">
+                    <i class="fas fa-comments"></i>
+                    <span class="notification-badge">12</span>
+                </button>
+                
+                <div class="user-info">
+                    <div class="user-details">
+                        <div class="user-name" id="user-name">Guest</div>
+                        <div class="user-school" id="user-school">Please login</div>
+                        <div class="user-streak" id="user-streak">🔥 0 day streak</div>
+                    </div>
+                    <div class="user-avatar" id="user-avatar">G</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="main-content">
+            <!-- Left Sidebar -->
+            <div class="sidebar">
+                <!-- Navigation -->
+                <div class="nav-section">
+                    <h3><i class="fas fa-home"></i> Dashboard</h3>
+                    <ul class="nav-list">
+                        <li class="nav-item active" data-tab="dashboard">
+                            <i class="fas fa-chart-line"></i>
+                            Overview
+                        </li>
+                        <li class="nav-item" data-tab="questions">
+                            <i class="fas fa-question-circle"></i>
+                            Q&A Feed
+                            <span class="badge">42</span>
+                        </li>
+                        <li class="nav-item" data-tab="papers">
+                            <i class="fas fa-file-alt"></i>
+                            Past Papers
+                            <span class="badge new">NEW</span>
+                        </li>
+                        <li class="nav-item" data-tab="groups">
+                            <i class="fas fa-users"></i>
+                            Study Groups
+                        </li>
+                        <li class="nav-item" data-tab="flashcards">
+                            <i class="fas fa-clone"></i>
+                            Flashcards
+                            <span class="badge premium">PRO</span>
+                        </li>
+                        <li class="nav-item" data-tab="ai">
+                            <i class="fas fa-robot"></i>
+                            AI Assistant
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Subjects -->
+                <div class="nav-section">
+                    <h3><i class="fas fa-book"></i> Subjects</h3>
+                    <ul class="nav-list">
+                        <li class="nav-item" data-subject="Mathematics">
+                            <i class="fas fa-calculator"></i>
+                            Mathematics
+                            <span class="online-count">234</span>
+                        </li>
+                        <li class="nav-item" data-subject="Chemistry">
+                            <i class="fas fa-flask"></i>
+                            Chemistry
+                            <span class="online-count">156</span>
+                        </li>
+                        <li class="nav-item" data-subject="Physics">
+                            <i class="fas fa-microscope"></i>
+                            Physics
+                            <span class="online-count">189</span>
+                        </li>
+                        <li class="nav-item" data-subject="Biology">
+                            <i class="fas fa-dna"></i>
+                            Biology
+                            <span class="online-count">203</span>
+                        </li>
+                        <li class="nav-item" data-subject="English">
+                            <i class="fas fa-book-open"></i>
+                            English
+                            <span class="online-count">298</span>
+                        </li>
+                        <li class="nav-item" data-subject="Geography">
+                            <i class="fas fa-globe-africa"></i>
+                            Geography
+                            <span class="online-count">124</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Study Progress -->
+                <div class="nav-section">
+                    <h3><i class="fas fa-trophy"></i> This Week</h3>
+                    <div class="progress-container">
+                        <div class="progress-circle">
+                            <svg class="progress-ring" width="60" height="60">
+                                <circle class="progress-ring-circle" cx="30" cy="30" r="18"></circle>
+                            </svg>
+                            <div class="progress-text">75%</div>
+                        </div>
+                        <div class="progress-label">Progress</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Center Panel -->
+            <div class="center-panel">
+                <!-- Tabs -->
+                <div class="main-tabs">
+                    <button class="main-tab active" data-tab="dashboard">Dashboard</button>
+                    <button class="main-tab" data-tab="questions">Q&A</button>
+                    <button class="main-tab" data-tab="papers">Papers</button>
+                    <button class="main-tab" data-tab="groups">Groups</button>
+                    <button class="main-tab" data-tab="ai">AI Assistant</button>
+                </div>
+
+                <!-- Tab Content -->
+                <div class="tab-content active" id="dashboard-tab">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-number" id="questions-count">0</div>
+                            <div class="stat-label">Questions Asked</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="answers-count">0</div>
+                            <div class="stat-label">Answers Given</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="groups-count">0</div>
+                            <div class="stat-label">Study Groups</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="streak-count">0</div>
+                            <div class="stat-label">Day Streak</div>
+                        </div>
+                    </div>
+
+                    <div class="study-plan">
+                        <div class="plan-header">
+                            <h3>Today's Study Plan</h3>
+                            <button class="post-btn" id="add-task-btn">
+                                <i class="fas fa-plus"></i> Add Task
+                            </button>
+                        </div>
+                        <div class="plan-items" id="plan-items">
+                            <!-- Plan items will be added here dynamically -->
+                        </div>
+                    </div>
+
+                    <div class="question-form">
+                        <h3>Ask a Question</h3>
+                        <div class="form-row">
+                            <select class="form-select" id="question-subject">
+                                <option value="">Select Subject</option>
+                                <option>Mathematics</option>
+                                <option>Chemistry</option>
+                                <option>Physics</option>
+                                <option>Biology</option>
+                                <option>English</option>
+                                <option>Geography</option>
+                            </select>
+                        </div>
+                        <div class="form-row">
+                            <textarea class="question-input" id="question-content" placeholder="Type your question here..."></textarea>
+                        </div>
+                        <div class="form-row" style="justify-content: flex-end;">
+                            <button class="post-btn" id="post-question-btn">
+                                <i class="fas fa-paper-plane"></i> Post Question
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="papers-grid" id="papers-grid">
+                        <!-- Papers will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="questions-tab">
+                    <div class="questions-container" id="questions-container">
+                        <!-- Questions will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="papers-tab">
+                    <div class="upload-paper-form" id="upload-paper-form">
+                        <h3>Upload Past Paper</h3>
+                        <div class="form-row">
+                            <select class="form-select" id="paper-subject">
+                                <option value="">Select Subject</option>
+                                <option>Mathematics</option>
+                                <option>Chemistry</option>
+                                <option>Physics</option>
+                                <option>Biology</option>
+                                <option>English</option>
+                                <option>Geography</option>
+                            </select>
+                            <input type="number" class="form-input" id="paper-year" placeholder="Year (e.g., 2023)" min="2000" max="2030">
+                        </div>
+                        <div class="form-row">
+                            <input type="file" class="form-input" id="paper-file" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
+                        <div class="form-row" style="justify-content: flex-end;">
+                            <button class="post-btn" id="upload-paper-btn">
+                                <i class="fas fa-upload"></i> Upload Paper
+                            </button>
+                        </div>
+                    </div>
+                    <div class="papers-grid" id="papers-tab-grid">
+                        <!-- Papers will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="tab-content" id="groups-tab">
+                    <div class="groups-container" id="groups-container">
+                        <!-- Groups will be loaded here -->
+                    </div>
+                    <!-- Group Chat Container -->
+                    <div class="group-chat-container" id="group-chat-container" style="display: none;">
+                        <div class="chat-header">
+                            <h3 id="chat-group-name">Group Chat</h3>
+                            <div class="connection-status" id="connection-status">
+                                <span class="status-offline">● Offline</span>
+                            </div>
+                        </div>
+                        
+                        <div class="chat-messages" id="group-chat-messages">
+                            <!-- Messages will appear here -->
+                        </div>
+                        
+                        <div class="typing-indicator" id="typing-indicator" style="display: none;">
+                            <!-- Typing indicator will appear here -->
+                        </div>
+                        
+                        <div class="chat-input-container">
+                            <textarea 
+                                id="group-message-input" 
+                                placeholder="Type your message..."
+                                class="chat-input"
+                            ></textarea>
+                            <button id="send-message-btn" class="post-btn">
+                                <i class="fas fa-paper-plane"></i> Send
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-content" id="ai-tab">
+                    <div class="ai-container">
+                        <div class="ai-header">
+                            <h3>AI Study Assistant</h3>
+                            <div class="ai-status">
+                                <div class="status-dot"></div>
+                                <span>Online</span>
+                            </div>
+                        </div>
+                        
+                        <div class="ai-messages" id="ai-messages">
+                            <div class="ai-message">
+                                Hello! I'm your AI study assistant. Ask me anything about your subjects.
+                            </div>
+                        </div>
+                        
+                        <div class="ai-input-container">
+                            <select class="form-select" id="ai-subject">
+                                <option value="">Select Subject</option>
+                                <option>Mathematics</option>
+                                <option>Chemistry</option>
+                                <option>Physics</option>
+                                <option>Biology</option>
+                                <option>English</option>
+                                <option>Geography</option>
+                            </select>
+                            <textarea class="ai-input" id="ai-input" placeholder="Ask a question..."></textarea>
+                            <button class="ai-send-btn" id="ai-send-btn">
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
+                        
+                        <div class="math-solver">
+                            <h4>Math Problem Solver</h4>
+                            <div class="form-row">
+                                <input type="text" class="math-input" id="math-input" placeholder="Enter math problem (e.g., solve 2x + 5 = 15)">
+                                <button class="post-btn" id="solve-math-btn">
+                                    <i class="fas fa-calculator"></i> Solve
+                                </button>
+                            </div>
+                            <div class="solution-container" id="solution-container">
+                                <!-- Solutions will appear here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar -->
+            <div class="right-sidebar">
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title"><i class="fas fa-trophy"></i> Leaderboard</h3>
+                        <button class="post-btn small" id="view-leaderboard">View All</button>
+                    </div>
+                    <div class="leaderboard" id="leaderboard">
+                        <!-- Leaderboard items will be loaded here -->
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title"><i class="fas fa-calendar-alt"></i> Upcoming Events</h3>
+                    </div>
+                    <div class="events">
+                        <div class="event-item">
+                            <div class="event-time">Tomorrow • 3:00 PM</div>
+                            <div class="event-title">Mathematics Revision Session</div>
+                            <div class="event-desc">Live tutoring session on calculus</div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-time">Oct 15 • 10:00 AM</div>
+                            <div class="event-title">Chemistry Practical Workshop</div>
+                            <div class="event-desc">Hands-on lab experiments</div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-time">Oct 20 • 2:00 PM</div>
+                            <div class="event-title">Mock Exam Preparation</div>
+                            <div class="event-desc">Tips and strategies session</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <div class="widget-header">
+                        <h3 class="widget-title"><i class="fas fa-bell"></i> Notifications</h3>
+                    </div>
+                    <div class="notifications" id="notifications-list">
+                        <div class="notification-item">
+                            <i class="fas fa-comment"></i>
+                            <div class="notification-content">
+                                <div class="notification-text">New message from Akosua Mensah</div>
+                                <div class="notification-time">5 min ago</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <i class="fas fa-users"></i>
+                            <div class="notification-content">
+                                <div class="notification-text">Your study group request approved</div>
+                                <div class="notification-time">1 hour ago</div>
+                            </div>
+                        </div>
+                        <div class="notification-item">
+                            <i class="fas fa-chart-line"></i>
+                            <div class="notification-content">
+                                <div class="notification-text">Weekly progress report available</div>
+                                <div class="notification-time">1 day ago</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+        <div class="modal-content">
+            <span class="close" id="close-login">&times;</span>
+            <h2>Login to GhanaStudy</h2>
+            <form id="login-form">
+                <input type="email" id="login-email" placeholder="Email" required>
+                <input type="password" id="login-password" placeholder="Password" required>
+                <button type="submit" class="post-btn">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="show-register">Register</a></p>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="register-modal">
+        <div class="modal-content">
+            <span class="close" id="close-register">&times;</span>
+            <h2>Register for GhanaStudy</h2>
+            <form id="register-form">
+                <input type="text" id="register-name" placeholder="Full Name" required>
+                <input type="email" id="register-email" placeholder="Email" required>
+                <input type="password" id="register-password" placeholder="Password" required>
+                <input type="text" id="register-school" placeholder="School (e.g., Achimota SHS)">
+                <input type="text" id="register-form" placeholder="Form Level (e.g., Form 3)">
+                <button type="submit" class="post-btn">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" id="show-login">Login</a></p>
+        </div>
+    </div>
+
+    <!-- Forgot Password Modal -->
+    <div class="modal" id="forgot-password-modal">
+        <div class="modal-content">
+            <span class="close" id="close-forgot-password" onclick="hideForgotPasswordModal()">&times;</span>
+            <h2>Reset Your Password</h2>
+            <p>Enter your email address and we'll send you a link to reset your password.</p>
+            <form id="forgot-password-form">
+                <input type="email" id="reset-email" placeholder="Your Email Address" required>
+                <button type="button" class="post-btn" id="send-reset-btn">Send Reset Link</button>
+            </form>
+            <p><a href="#" onclick="document.getElementById('forgot-password-modal').style.display='none'; document.getElementById('login-modal').style.display='block'">Back to Login</a></p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
